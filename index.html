@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Для тебя ❤️</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#08080d;color:white;font-family:'Montserrat',sans-serif;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer}
+
+#loginScreen{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at center,rgba(20,80,45,.15),#020403 65%)}
+.terminal{width:100%;max-width:760px;background:#030805;border:1px solid #1b633d;border-radius:8px;overflow:hidden;box-shadow:0 0 60px rgba(0,255,100,.08)}
+.terminal-top{height:38px;display:flex;align-items:center;padding:0 14px;background:#0b160f;border-bottom:1px solid #17472c}
+.dot{width:10px;height:10px;border-radius:50%;margin-right:7px}.red{background:#ff5f57}.yellow{background:#ffbd2e}.green{background:#28c840}
+.terminal-title{margin-left:10px;color:#62806c;font-family:monospace;font-size:11px}
+.terminal-body{padding:30px;min-height:470px;font-family:monospace}
+.line{color:#3fe77e;font-size:14px;line-height:1.8}.dim{color:#4c735a}.warning{color:#ffbd4a}.success{color:#4cff91}
+.password-container{margin-top:30px;max-width:450px}.password-title{color:#5d9973;font-size:11px;letter-spacing:3px;margin-bottom:12px}
+.password-row{display:flex;gap:10px}.password{flex:1;padding:14px;background:#020a05;border:1px solid #1b633d;border-radius:5px;color:#42eb82;outline:none;font-family:monospace;font-size:16px;letter-spacing:3px}
+.password:focus{border-color:#40e77e;box-shadow:0 0 15px rgba(64,231,126,.15)}
+.login{padding:14px 22px;border:1px solid #277147;border-radius:5px;background:#091c11;color:#45e983;transition:.2s}.login:hover{background:#123b21}
+.error-message{display:none;margin-top:12px;color:#ff5555;font-size:12px}
+
+#hack{display:none;margin-top:30px}.progress{width:100%;height:6px;margin-top:15px;background:#0a2114;border-radius:10px;overflow:hidden}
+.progress-bar{width:0%;height:100%;background:#39e979;transition:width .15s}
+
+#site{display:none}section{min-height:100vh;padding:80px 20px;display:flex;align-items:center;justify-content:center;position:relative}
+.container{width:100%;max-width:1050px;margin:auto}h1,h2{font-family:'Playfair Display',serif}
+
+.stars,.stars::before,.stars::after{position:fixed;inset:0;pointer-events:none;z-index:-1}
+.stars{background-image:radial-gradient(circle,rgba(255,255,255,.8) 1px,transparent 1px);background-size:90px 90px;opacity:.25;animation:moveStars 30s linear infinite}
+.stars::before{content:"";background-image:radial-gradient(circle,rgba(255,120,180,.7) 1px,transparent 1px);background-size:140px 140px}
+@keyframes moveStars{from{transform:translateY(0)}to{transform:translateY(90px)}}
+
+.main-screen{text-align:center;background:radial-gradient(circle at center,rgba(190,70,130,.22),transparent 55%)}
+.main-content{max-width:850px}.small-title{color:#d982aa;font-size:11px;letter-spacing:6px;margin-bottom:25px}
+.main-title{font-family:'Playfair Display',serif;font-size:clamp(55px,12vw,120px);line-height:.9;margin-bottom:35px}
+.description{max-width:650px;margin:auto;color:#aaa;line-height:1.8;font-size:16px}
+.info{display:flex;justify-content:center;gap:50px;margin-top:45px;color:#666;font-size:10px;letter-spacing:2px}.info span{display:block;color:#ddd;margin-top:8px;letter-spacing:0}
+.button{margin-top:40px;padding:16px 32px;border-radius:50px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:white;font-size:15px;transition:.3s}
+.button:hover{background:#d15b96;transform:translateY(-3px);box-shadow:0 10px 40px rgba(209,91,150,.3)}
+
+.countdown-section{text-align:center;background:radial-gradient(circle at center,rgba(210,70,140,.18),transparent 60%)}
+.countdown-title{font-size:clamp(45px,8vw,80px);margin-bottom:20px}.countdown-subtitle{color:#aaa;max-width:600px;margin:auto;line-height:1.8}
+.countdown{display:flex;justify-content:center;gap:18px;margin-top:45px;flex-wrap:wrap}
+.time-box{width:120px;padding:25px 15px;border:1px solid rgba(255,255,255,.1);border-radius:20px;background:rgba(255,255,255,.04);backdrop-filter:blur(10px)}
+.time-number{font-size:42px;font-weight:700;color:#fff}.time-label{margin-top:8px;color:#d889b5;font-size:10px;letter-spacing:2px}
+
+.gallery-section{background:#09090e}.gallery-title{text-align:center;margin-bottom:50px}.gallery-title h2{font-size:48px}
+.section-label{color:#d889b5;font-size:12px;letter-spacing:4px;text-transform:uppercase;margin-bottom:15px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.photo{height:350px;overflow:hidden;border-radius:20px;position:relative;background:#16161d}
+.photo img{width:100%;height:100%;object-fit:cover;transition:.6s}.photo:hover img{transform:scale(1.08)}
+.photo-text{position:absolute;left:0;right:0;bottom:0;padding:30px 20px 20px;background:linear-gradient(transparent,rgba(0,0,0,.85))}
+
+.tick-section{text-align:center;overflow:hidden;background:radial-gradient(circle at center,rgba(90,70,180,.16),transparent 60%)}
+.tick-wrapper{position:relative;width:100%;height:440px;display:flex;justify-content:center;align-items:center}
+.tick-character{position:relative;width:300px;height:300px;cursor:pointer;z-index:5;animation:tickFloat 2.4s ease-in-out infinite}
+.tick-character img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 25px 25px rgba(0,0,0,.35))}
+.tick-character.attack{animation:tickAttack .55s ease}
+@keyframes tickFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-15px) rotate(2deg)}}
+@keyframes tickAttack{0%{transform:scale(1) rotate(0)}25%{transform:scale(1.12) rotate(-8deg)}50%{transform:scale(.94) rotate(8deg)}75%{transform:scale(1.08) rotate(-4deg)}100%{transform:scale(1) rotate(0)}}
+#heartContainer{position:absolute;inset:0;pointer-events:none}
+.flying-heart{position:absolute;font-size:30px;pointer-events:none;z-index:10;animation:heartFly 1.8s ease-out forwards}
+@keyframes heartFly{
+0%{opacity:1;transform:translate(0,0) scale(.4) rotate(0)}
+30%{opacity:1;transform:translate(var(--x1),var(--y1)) scale(1.2) rotate(20deg)}
+100%{opacity:0;transform:translate(var(--x2),var(--y2)) scale(.5) rotate(180deg)}
+}
+
+.letter-section{text-align:center;background:linear-gradient(180deg,#08080d,#100911)}
+.envelope{width:320px;height:210px;background:#b44d7d;margin:50px auto;border-radius:10px;position:relative;transition:.5s;cursor:pointer;box-shadow:0 30px 80px rgba(180,77,125,.25)}
+.envelope::before{content:"";position:absolute;left:0;top:0;border-left:160px solid transparent;border-right:160px solid transparent;border-top:110px solid #d46a9c}
+.heart{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:50px;z-index:3}
+.letter{display:none;max-width:700px;margin:30px auto;padding:45px;background:white;color:#222;border-radius:10px;text-align:left;line-height:1.9;animation:appear .8s ease}
+.letter.show{display:block}.letter p{margin-bottom:18px}
+@keyframes appear{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.future{text-align:center;background:radial-gradient(circle at center,rgba(110,50,150,.18),transparent 55%)}
+.future h2{font-size:clamp(45px,8vw,80px);margin-bottom:30px}.future-text{max-width:650px;margin:auto;color:#aaa;line-height:1.9}
+.final{text-align:center;background:radial-gradient(circle at center,rgba(210,70,140,.2),transparent 55%)}
+.final h2{font-size:clamp(50px,10vw,100px);margin-bottom:25px}.final p{color:#aaa;max-width:600px;margin:auto;line-height:1.9;font-size:17px}
+.final-heart{font-size:70px;margin:30px 0;animation:heartbeat 1.5s infinite}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+.confetti{position:fixed;top:-20px;z-index:10000;font-size:20px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+@media(max-width:700px){
+section{padding:70px 16px}.terminal-body{padding:20px}.password-row{flex-direction:column}.login{width:100%}
+.info{gap:20px;flex-wrap:wrap}.countdown{gap:10px}.time-box{width:90px;padding:20px 10px}.time-number{font-size:30px}
+.gallery{grid-template-columns:1fr}.photo{height:400px}.envelope{width:280px;height:185px}.envelope::before{border-left-width:140px;border-right-width:140px}
+.letter{padding:30px 22px}.tick-wrapper{height:350px}.tick-character{width:270px;height:270px}
+}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+<div class="terminal">
+<div class="terminal-top"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div><div class="terminal-title">secure_birthday_system — terminal</div></div>
+<div class="terminal-body">
+<div class="line">root@birthday-server:~$ ./initialize</div>
+<div class="line dim">Initializing secure environment...</div>
+<div class="line dim">Loading encrypted archive...</div>
+<div class="line dim">Searching for authorized user...</div><br>
+<div class="line warning">[!] ACCESS RESTRICTED</div>
+<div class="line">[!] PERSONAL ARCHIVE DETECTED</div>
+<div class="line dim">Security level: MAXIMUM</div><br>
+<div class="line success">TARGET: [ЕЁ ИМЯ]</div>
+<div class="line dim">Classification: VERY IMPORTANT</div>
+<div class="password-container">
+<div class="password-title">ENTER ACCESS CODE</div>
+<div class="password-row">
+<input id="password" class="password" type="password" placeholder="ACCESS CODE" autocomplete="off">
+<button class="login" onclick="checkPassword()">ENTER</button>
+</div>
+<div id="error" class="error-message">ACCESS DENIED — неверный пароль</div>
+</div>
+<div id="hack">
+<div class="line">> Bypassing firewall...</div>
+<div class="line">> Decrypting memories...</div>
+<div class="line">> Verifying identity...</div>
+<div class="line">> Opening encrypted archive...</div>
+<div class="progress"><div id="progress" class="progress-bar"></div></div><br>
+<div class="line success">ACCESS GRANTED ✓</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="site">
+<div class="stars"></div>
+
+<section class="main-screen">
+<div class="main-content">
+<div class="small-title">A SPECIAL PRESENTATION</div>
+<div class="main-title">Её история</div>
+<div class="description">Фильм об одной девушке, которая однажды появилась в моей жизни и стала главным персонажем одной очень важной истории.</div>
+<div class="info">
+<div>ЖАНР<span>Romance</span></div>
+<div>РЕЖИССЁР<span>Я</span></div>
+<div>ГЛАВНАЯ РОЛЬ<span>[ЕЁ ИМЯ]</span></div>
+<div>ДЕНЬ РОЖДЕНИЯ<span>26.09.2008</span></div>
+</div>
+<button class="button" onclick="scrollToSection('countdown')">Открыть подарок →</button>
+</div>
+</section>
+
+<section class="countdown-section" id="countdown">
+<div class="container">
+<div class="section-label">SPECIAL DAY</div>
+<h2 class="countdown-title">До её дня рождения</h2>
+<p class="countdown-subtitle">До самого особенного дня осталось совсем немного ❤️</p>
+<div class="countdown">
+<div class="time-box"><div class="time-number" id="days">00</div><div class="time-label">ДНЕЙ</div></div>
+<div class="time-box"><div class="time-number" id="hours">00</div><div class="time-label">ЧАСОВ</div></div>
+<div class="time-box"><div class="time-number" id="minutes">00</div><div class="time-label">МИНУТ</div></div>
+<div class="time-box"><div class="time-number" id="seconds">00</div><div class="time-label">СЕКУНД</div></div>
+</div>
+<button class="button" onclick="scrollToSection('photos')">Дальше →</button>
+</div>
+</section>
+
+<section class="gallery-section" id="photos">
+<div class="container">
+<div class="gallery-title">
+<div class="section-label">MEMORIES</div>
+<h2>Наши моменты</h2>
+</div>
+<div class="gallery">
+<div class="photo"><img src="photos/photo1.jpg" alt="Фото 1"><div class="photo-text">Здесь можно написать подпись ❤️</div></div>
+<div class="photo"><img src="photos/photo2.jpg" alt="Фото 2"><div class="photo-text">Один из моих любимых моментов.</div></div>
+<div class="photo"><img src="photos/photo3.jpg" alt="Фото 3"><div class="photo-text">И таких воспоминаний у нас ещё очень много.</div></div>
+</div>
+<div style="text-align:center"><button class="button" onclick="scrollToSection('tick')">А теперь главный сюрприз →</button></div>
+</div>
+</section>
+
+<section class="tick-section" id="tick">
+<div class="container">
+<div class="section-label">SPECIAL GUEST</div>
+<h2 style="font-size:clamp(45px,8vw,75px)">ТИК ❤️</h2>
+<p style="color:#aaa;max-width:600px;margin:15px auto 0;line-height:1.8">Он тоже пришёл поздравить её. Нажми на него ❤️</p>
+<div class="tick-wrapper">
+<div class="tick-character" onclick="tickAttack()">
+<img src="tick-head.png" alt="Тик из Brawl Stars">
+</div>
+<div id="heartContainer"></div>
+</div>
+<button class="button" onclick="tickAttack()">❤️ Выпустить сердечки</button>
+<br>
+<button class="button" onclick="scrollToSection('letter')">Дальше →</button>
+</div>
+</section>
+
+<section class="letter-section" id="letter">
+<div class="container">
+<div class="section-label">TOP SECRET</div>
+<h2 style="font-size:50px">Секретное сообщение</h2>
+<p style="color:#aaa;margin-top:15px">Кажется, пришло время открыть главный конверт.</p>
+<div class="envelope" onclick="openLetter()"><div class="heart">❤️</div></div>
+<div class="letter" id="letterText">
+<h2 style="margin-bottom:20px">Любимая ❤️</h2>
+<p>Сегодня твой день рождения, и мне хотелось сделать для тебя что-то необычное.</p>
+<p>Я мог просто написать сообщение или купить подарок, но мне захотелось собрать маленький кусочек нашей истории в одном месте.</p>
+<p>Спасибо тебе за все наши моменты, разговоры, смех, прогулки, фотографии и даже за те моменты, которые были неидеальными.</p>
+<p>Я очень ценю то, что ты есть в моей жизни.</p>
+<p>И сегодня я просто хочу пожелать тебе быть счастливой, улыбаться как можно чаще и никогда не забывать, насколько ты особенная.</p>
+<p>С днём рождения, любимая ❤️</p>
+</div>
+<button class="button" onclick="scrollToSection('future')">Что будет дальше? →</button>
+</div>
+</section>
+
+<section class="future" id="future">
+<div class="container">
+<div class="section-label">UNKNOWN</div>
+<h2>А что будет дальше?</h2>
+<p class="future-text">Я не знаю, где мы будем через год. Не знаю, какие приключения нас ждут, какие места мы посетим и сколько ещё фотографий появится в нашей галерее.<br><br>Но мне нравится мысль о том, что лучшие страницы нашей истории ещё даже не написаны.</p>
+<button class="button" onclick="scrollToSection('final')">Последняя страница →</button>
+</div>
+</section>
+
+<section class="final" id="final">
+<div class="container">
+<div class="section-label">❤️</div>
+<h2>С днём рождения ❤️</h2>
+<div class="final-heart">❤️</div>
+<p>Спасибо, что однажды появилась в моей жизни. Я надеюсь, что этот маленький сайт хотя бы немного подарил тебе улыбку.</p>
+<p style="margin-top:25px">А теперь самое главное: иди и получай свой настоящий подарок 🎁</p>
+<button class="button" onclick="celebrate()">Закрыть дело ❤️</button>
+</div>
+</section>
+</div>
+
+<script>
+function checkPassword(){
+const password=document.getElementById("password").value;
+const error=document.getElementById("error");
+const hack=document.getElementById("hack");
+const progress=document.getElementById("progress");
+if(password==="26092008"){
+error.style.display="none";hack.style.display="block";let value=0;
+const timer=setInterval(()=>{
+value+=5;progress.style.width=value+"%";
+if(value>=100){clearInterval(timer);setTimeout(()=>{
+const login=document.getElementById("loginScreen");login.style.transition="opacity 1s";login.style.opacity="0";
+setTimeout(()=>{login.style.display="none";document.getElementById("site").style.display="block";window.scrollTo(0,0)},1000)
+},700)}
+},100)
+}else{
+error.style.display="block";document.getElementById("password").value="";document.getElementById("password").focus()
+}}
+document.getElementById("password").addEventListener("keydown",e=>{if(e.key==="Enter")checkPassword()});
+
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:"smooth"})}
+
+function updateCountdown(){
+const now=new Date();let year=now.getFullYear();
+let birthday=new Date(year,8,26,0,0,0);
+if(now>=birthday)birthday=new Date(year+1,8,26,0,0,0);
+const difference=birthday-now;
+const days=Math.floor(difference/(1000*60*60*24));
+const hours=Math.floor((difference/(1000*60*60))%24);
+const minutes=Math.floor((difference/(1000*60))%60);
+const seconds=Math.floor((difference/1000)%60);
+document.getElementById("days").textContent=String(days).padStart(2,"0");
+document.getElementById("hours").textContent=String(hours).padStart(2,"0");
+document.getElementById("minutes").textContent=String(minutes).padStart(2,"0");
+document.getElementById("seconds").textContent=String(seconds).padStart(2,"0");
+}
+updateCountdown();setInterval(updateCountdown,1000);
+
+function openLetter(){
+const letter=document.getElementById("letterText");letter.classList.add("show");
+document.querySelector(".envelope").style.transform="scale(.9)";
+setTimeout(()=>letter.scrollIntoView({behavior:"smooth",block:"center"}),300)
+}
+
+function tickAttack(){
+const tick=document.querySelector(".tick-character");
+const container=document.getElementById("heartContainer");
+tick.classList.remove("attack");void tick.offsetWidth;tick.classList.add("attack");
+for(let i=0;i<10;i++){
+const heart=document.createElement("div");heart.className="flying-heart";
+heart.innerHTML=Math.random()>.5?"❤️":"💕";
+const x1=Math.random()*140-70,y1=-(Math.random()*110+40);
+const x2=Math.random()*560-280,y2=-(Math.random()*320+150);
+heart.style.setProperty("--x1",x1+"px");heart.style.setProperty("--y1",y1+"px");
+heart.style.setProperty("--x2",x2+"px");heart.style.setProperty("--y2",y2+"px");
+heart.style.left="calc(50% - 15px)";heart.style.top="calc(50% - 15px)";
+heart.style.animationDelay=(i*.06)+"s";container.appendChild(heart);
+setTimeout(()=>heart.remove(),2400)
+}
+}
+
+function celebrate(){
+for(let i=0;i<180;i++){
+const confetti=document.createElement("div");confetti.className="confetti";
+confetti.style.left=Math.random()*100+"vw";
+confetti.style.animationDuration=(Math.random()*3+2)+"s";
+confetti.innerHTML=Math.random()>.5?"❤️":"✨";
+document.body.appendChild(confetti);setTimeout(()=>confetti.remove(),5000)
+}
+}
+</script>
+</body>
+</html>
